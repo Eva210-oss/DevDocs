@@ -1,0 +1,8 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<div class="row row-cols-1 row-cols-md-3 g-4">
+  {% for tutorial in tutorials %}
+    <div class="col">{% include '_partials/_tutorial_card.html.twig' %}</div>
+  {% endfor %}
+</div>
+{% endblock %} 
