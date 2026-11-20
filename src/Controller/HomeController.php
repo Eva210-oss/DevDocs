@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Entity\Tag;
-use App\Entity\Tutorial;
+
 use App\Repository\TutorialRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,9 +38,5 @@ final class HomeController extends AbstractController
         ]);
     }
 
-    #[Route('/tutorial/{slug}', name: 'app_tutorial_show')]
-    public function show(Tutorial $tutorial): Response
-    {
-        return $this->render('tutorial/show.html.twig', ['tutorial' => $tutorial]);
-    }
+    
 }

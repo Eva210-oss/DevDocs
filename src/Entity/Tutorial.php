@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TutorialRepository::class)]
 class Tutorial
@@ -16,13 +17,17 @@ class Tutorial
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Le titre est obligatoire.')]
+    #[Assert\Length(max: 255)]
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 50, minMessage: 'Le contenu doit faire au moins 50 caractères.')]
     private ?string $content = null;
 
     #[ORM\Column]
@@ -34,6 +39,7 @@ class Tutorial
 
     #[ORM\ManyToOne(inversedBy: 'tutorials')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotNull(message: 'Choisissez une catégorie.')]
     private ?Category $category = null;
 
     /**
@@ -54,8 +60,6 @@ class Tutorial
         $this->comments = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
     }
-
-    
 
     public function getId(): ?int
     {
@@ -187,6 +191,4 @@ class Tutorial
 
         return $this;
     }
-
-    
 }
