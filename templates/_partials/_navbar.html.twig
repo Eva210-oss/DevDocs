@@ -7,7 +7,8 @@
         <li class="nav-item"><a class="nav-link" href="#">Mon Profil ({{ app.user.pseudonyme }})</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ path('app_logout') }}">Déconnexion</a></li>
       {% else %}
-       
+        <li class="nav-item"><a class="nav-link" href="{{ path('app_register') }}">Inscription</a></li>
+        <li class="nav-item"><a class="btn btn-primary" href="{{ path('app_login') }}">Connexion</a></li>
       {% endif %}
     </ul>
   </div>

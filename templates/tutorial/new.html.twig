@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Publier un tutoriel{% endblock %}
+
+{% block body %}
+
+<div class="container mt-5 mb-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-8">
+
+            <div class="card shadow">
+
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Publier un tutoriel</h3>
+                </div>
+
+                <div class="card-body">
+
+                    {{ form_start(form) }}
+
+                        {{ form_row(form.title) }}
+
+                        {{ form_row(form.content) }}
+
+                        {{ form_row(form.category) }}
+
+                        <div class="mb-3">
+                            {{ form_label(form.tags) }}
+                            {{ form_widget(form.tags) }}
+                            {{ form_errors(form.tags) }}
+                        </div>
+
+                        <button type="submit" class="btn btn-success mt-3">
+                            Publier le tutoriel
+                        </button>
+
+                    {{ form_end(form) }}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

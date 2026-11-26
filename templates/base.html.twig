@@ -2,23 +2,51 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>{% block title %}DevDocs{% endblock %}</title>
+
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
+
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+
+    {% block stylesheets %}{% endblock %}
 </head>
+
 <body>
+
     {% include '_partials/_navbar.html.twig' %}
 
     <main class="container my-4">
+
+        {# Messages Flash #}
         {% for type, messages in app.flashes %}
             {% for message in messages %}
-                <div class="alert alert-{{ type }}">{{ message }}</div>
+                <div class="alert alert-{{ type }} alert-dismissible fade show" role="alert">
+
+                    {{ message }}
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert"
+                            aria-label="Fermer">
+                    </button>
+
+                </div>
             {% endfor %}
         {% endfor %}
+
+        {# Contenu de chaque page #}
         {% block body %}{% endblock %}
+
     </main>
 
     {% include '_partials/_footer.html.twig' %}
+
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
+
+    {% block javascripts %}{% endblock %}
+
 </body>
 </html>

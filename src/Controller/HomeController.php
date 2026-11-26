@@ -16,6 +16,7 @@ final class HomeController extends AbstractController
     public function index(TutorialRepository $repo): Response
     {
         return $this->render('home/index.html.twig', [
+            'title' => 'Accueil',
             'tutorials' => $repo->findBy([], ['createdAt' => 'DESC'], 6),
         ]);
     }

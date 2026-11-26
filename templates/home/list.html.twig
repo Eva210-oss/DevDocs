@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }} - DevDocs{% endblock %}
+
+{% block body %}
+
+<div class="container mt-5">
+
+    <h1 class="mb-4">{{ title }}</h1>
+
+    <div class="row">
+
+        {% for tutorial in tutorials %}
+
+            <div class="col-md-4 mb-4">
+
+                <div class="card h-100">
+
+                    <div class="card-body">
+
+                        <h5 class="card-title">
+                            {{ tutorial.title }}
+                        </h5>
+
+                        <p class="card-text">
+                            {{ tutorial.content|slice(0, 120) }}...
+                        </p>
+
+                        {% if tutorial.category %}
+                            <a href="{{ path('app_category', {'id': tutorial.category.id}) }}"
+                               class="badge bg-primary text-decoration-none">
+                                {{ tutorial.category.name }}
+                            </a>
+                        {% endif %}
+
+                        {% for tag in tutorial.tags %}
+                            <a href="{{ path('app_tag', {'id': tag.id}) }}"
+                               class="badge bg-secondary text-decoration-none">
+                                #{{ tag.name }}
+                            </a>
+                        {% endfor %}
+
+                        <hr>
+
+                        <small>
+                            Auteur : {{ tutorial.author.pseudonyme }}
+                        </small>
+
+                        <br>
+
+                        <small>
+                            {{ tutorial.createdAt|date('d/m/Y') }}
+                        </small>
+
+                        <br><br>
+
+                        <a href="{{ path('app_tutorial_show', {'slug': tutorial.slug}) }}"
+                           class="btn btn-primary">
+                            Lire le tutoriel
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        {% else %}
+
+            <div class="col-12">
+                <div class="alert alert-info">
+                    Aucun tutoriel trouvé pour cette sélection.
+                </div>
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+    <a href="{{ path('app_home') }}" class="btn btn-secondary mt-3">
+        Retour à l'accueil
+    </a>
+
+</div>
+
+{% endblock %}
