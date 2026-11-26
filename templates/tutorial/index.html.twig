@@ -1,0 +1,261 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}DevDocs - Tutorials{% endblock %}
+
+{% block body %}
+
+{# NAVBAR #}
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+
+        <a class="navbar-brand fw-bold fs-3" href="{{ path('app_home') }}">
+            DevDocs
+        </a>
+
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse" data-bs-target="#navbarContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav ms-auto align-items-lg-center">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_home') }}">Home</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link active" href="{{ path('app_tutorials') }}">
+                        Tutorials
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Categories</a>
+                </li>
+
+                {% if app.user %}
+                    {# Utilisateur connecté #}
+                    <li class="nav-item">
+                        <span class="nav-link">
+                            👋 {{ app.user.pseudonyme }}
+                        </span>
+                    </li>
+
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn btn-light text-primary fw-semibold"
+                           href="{{ path('app_logout') }}">
+                            Logout
+                        </a>
+                    </li>
+
+                {% else %}
+                    {# Utilisateur non connecté #}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_login') }}">
+                            Login
+                        </a>
+                    </li>
+
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn btn-light text-primary fw-semibold"
+                           href="{{ path('app_register') }}">
+                            Register
+                        </a>
+                    </li>
+                {% endif %}
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+{# PAGE HEADER #}
+<section class="bg-light py-5">
+    <div class="container text-center">
+
+        <h1 class="display-5 fw-bold text-primary">
+            Explore Tutorials
+        </h1>
+
+        <p class="lead text-secondary mt-3">
+            Learn new technologies and improve your programming skills.
+        </p>
+
+        {# SEARCH #}
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-7 col-lg-6">
+
+<form method="GET" action="{{ path('app_tutorials') }}" class="mb-4">
+    <div class="row g-3">
+
+        {# Recherche #}
+        <div class="col-12 col-md-4">
+            <input
+                type="text"
+                name="q"
+                class="form-control"
+                placeholder="Search tutorials..."
+                value="{{ searchTerm }}"
+            >
+        </div>
+
+        {# Filtre par catégorie #}
+        <div class="col-12 col-md-3">
+            <select name="category" class="form-select">
+                <option value="">All categories</option>
+
+                {% for category in categories %}
+                    <option value="{{ category.id }}"
+                        {% if selectedCategory == category.id ~ '' %}selected{% endif %}>
+                        {{ category.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        {# Filtre par tag #}
+        <div class="col-12 col-md-3">
+            <select name="tag" class="form-select">
+                <option value="">All tags</option>
+
+                {% for tag in tags %}
+                    <option value="{{ tag.id }}"
+                        {% if selectedTag == tag.id ~ '' %}selected{% endif %}>
+                        {{ tag.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        {# Boutons #}
+        <div class="col-12 col-md-2 d-flex gap-2">
+            <button type="submit" class="btn btn-primary flex-grow-1">
+                Filter
+            </button>
+
+            <a href="{{ path('app_tutorials') }}" class="btn btn-outline-secondary">
+                Reset
+            </a>
+        </div>
+
+    </div>
+</form>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+{# TUTORIALS LIST #}
+<section class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+
+        <h2 class="fw-bold mb-2">
+            All Tutorials
+        </h2>
+
+        <span class="text-secondary">
+            {{ tutorials|length }} tutorial(s)
+        </span>
+
+    </div>
+
+    {% if searchTerm is not empty %}
+        <p class="text-secondary mb-4">
+            Results for: <strong>{{ searchTerm }}</strong>
+        </p>
+    {% endif %}
+
+    <div class="row g-4">
+
+        {% for tutorial in tutorials %}
+
+            <div class="col-12 col-md-6 col-lg-4">
+
+                <div class="card h-100 shadow-sm border-0">
+
+                    <div class="card-body p-4">
+
+                        {# CATEGORY #}
+                        <span class="badge bg-primary mb-3">
+                            {{ tutorial.category.name }}
+                        </span>
+
+                        {# TITLE #}
+                        <h5 class="card-title fw-bold">
+                            {{ tutorial.title }}
+                        </h5>
+
+                        {# CONTENT PREVIEW #}
+                        <p class="text-secondary">
+                            {{ tutorial.content|slice(0, 150) }}...
+                        </p>
+
+                        {# AUTHOR #}
+                        <p class="small text-muted mb-1">
+                            By {{ tutorial.author.pseudonyme }}
+                        </p>
+
+                        {# DATE #}
+                        <p class="small text-muted">
+                            {{ tutorial.createdAt|date('d/m/Y') }}
+                        </p>
+
+                        {# READ MORE #}
+                        <a href="{{ path('app_tutorial_show', {slug: tutorial.slug}) }}"
+                        class="btn btn-primary">
+                            Read More
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        {% else %}
+
+            <div class="col-12 text-center py-5">
+
+                <h4 class="text-secondary">
+                    No tutorials found
+                </h4>
+
+                <p class="text-muted">
+                    Try another search keyword.
+                </p>
+
+                <a href="{{ path('app_tutorials') }}"
+                   class="btn btn-primary">
+                    View All Tutorials
+                </a>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{# FOOTER #}
+<footer class="bg-primary text-white py-4">
+    <div class="container text-center">
+
+        <h4 class="fw-bold">DevDocs</h4>
+
+        <p class="text-white-50">
+            Learn. Share. Grow.
+        </p>
+
+        <p class="small text-white-50 mb-0">
+            © {{ "now"|date("Y") }} DevDocs. All rights reserved.
+        </p>
+
+    </div>
+</footer>
+
+{% endblock %}

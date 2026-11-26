@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Tutorial - DevDocs{% endblock %}
+
+{% block body %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <div class="card shadow border-0">
+
+                <div class="card-header bg-warning py-3">
+                    <h2 class="mb-0">Edit Tutorial</h2>
+                </div>
+
+                <div class="card-body p-4">
+
+                    <p class="text-muted mb-4">
+                        Update your tutorial information.
+                    </p>
+
+                    {{ form_start(form) }}
+
+                        {{ form_row(form.title) }}
+                        {{ form_row(form.content) }}
+                        {{ form_row(form.category) }}
+                        {{ form_row(form.tags) }}
+
+                        <div class="d-flex justify-content-between mt-4">
+
+                            <a href="{{ path('app_tutorial_show', {'slug': tutorial.slug}) }}"
+                               class="btn btn-outline-secondary">
+                                Cancel
+                            </a>
+
+                            <button type="submit" class="btn btn-warning">
+                                Save Changes
+                            </button>
+
+                        </div>
+
+                    {{ form_end(form) }}
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,354 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}DevDocs - Learn. Share. Grow.{% endblock %}
+
+{% block body %}
+<div class="alert alert-info">
+    {% if app.user %}
+        ✅ Connected as: {{ app.user.pseudonyme }}
+    {% else %}
+        ❌ Not connected
+    {% endif %}
+</div>
+{# NAVBAR #}
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand fw-bold fs-3" href="{{ path('app_home') }}">
+            DevDocs
+        </a>
+
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse" data-bs-target="#navbarContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav ms-auto align-items-lg-center">
+                <li class="nav-item">
+                    <a class="nav-link active" href="{{ path('app_home') }}">Home</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('app_tutorials') }}">Tutorials</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Categories</a>
+                </li>
+
+                {% if app.user %}
+                    {# Utilisateur connecté #}
+                    <li class="nav-item">
+                        <span class="nav-link">
+                            👋 {{ app.user.pseudonyme }}
+                        </span>
+                    </li>
+
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn btn-light text-primary fw-semibold"
+                           href="{{ path('app_logout') }}">
+                            Logout
+                        </a>
+                    </li>
+
+                {% else %}
+                    {# Utilisateur non connecté #}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_login') }}">
+                            Login
+                        </a>
+                    </li>
+
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn btn-light text-primary fw-semibold"
+                           href="{{ path('app_register') }}">
+                            Register
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+{# HERO SECTION #}
+<section class="py-5 bg-light">
+    <div class="container text-center py-5">
+
+        <span class="badge bg-primary mb-3 px-3 py-2">
+            Welcome to DevDocs
+        </span>
+
+        <h1 class="display-3 fw-bold text-primary">
+            Learn. Share. Grow.
+        </h1>
+
+        <p class="lead text-secondary mt-4 mb-4">
+            Discover technical tutorials, share your knowledge
+            and grow your programming skills with DevDocs.
+        </p>
+
+        {# SEARCH BAR #}
+        <div class="row justify-content-center">
+            <div class="col-md-7 col-lg-6">
+
+                <form action="{{ path('app_home') }}" method="GET">
+                    <div class="input-group input-group-lg shadow-sm">
+
+                        <input
+                            type="search"
+                            name="q"
+                            class="form-control"
+                            placeholder="Search for tutorials..."
+                            aria-label="Search tutorials"
+                            value="{{ searchTerm }}"
+                        >
+
+                        <button class="btn btn-primary px-4" type="submit">
+                            Search
+                        </button>
+
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <a href="#latest-tutorials" class="btn btn-primary btn-lg px-4">
+                Explore Tutorials
+            </a>
+
+            <a href="#" class="btn btn-outline-primary btn-lg px-4 ms-2">
+                Join Our Community
+            </a>
+        </div>
+
+    </div>
+</section>
+
+{# LATEST TUTORIALS #}
+<section class="container py-5" id="latest-tutorials">
+
+    <div class="text-center mb-5">
+        <h2 class="fw-bold">Latest Tutorials</h2>
+
+        <p class="text-secondary">
+            Discover the latest tutorials shared by our community.
+        </p>
+
+        {% if searchTerm is not empty %}
+            <p class="text-secondary">
+                Search results for: <strong>{{ searchTerm }}</strong>
+            </p>
+        {% endif %}
+    </div>
+
+    <div class="row g-4">
+
+        {% for tutorial in tutorials %}
+
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm border-0">
+
+                    <div class="card-body p-4">
+
+                        <span class="badge bg-primary mb-3">
+                            {{ tutorial.category.name }}
+                        </span>
+
+                        <h5 class="card-title fw-bold">
+                            {{ tutorial.title }}
+                        </h5>
+
+                        <p class="text-secondary">
+                            {{ tutorial.content|slice(0, 120) }}...
+                        </p>
+
+                        <p class="small text-muted">
+                            By {{ tutorial.author.pseudonyme }}
+                        </p>
+
+                        <p class="small text-muted">
+                            {{ tutorial.createdAt|date('d/m/Y') }}
+                        </p>
+
+                        <a href="#" class="btn btn-outline-primary">
+                            Read More
+                        </a>
+
+                    </div>
+
+                </div>
+            </div>
+
+        {% else %}
+
+            <div class="col-12 text-center">
+                <p class="text-muted">
+                    No tutorials available yet.
+                </p>
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{# POPULAR CATEGORIES #}
+<section class="container py-5">
+
+    <div class="text-center mb-5">
+        <h2 class="fw-bold">Popular Categories</h2>
+
+        <p class="text-secondary">
+            Explore tutorials by technology and programming domain.
+        </p>
+    </div>
+
+    <div class="row g-4">
+
+        {% for category in categories %}
+
+            <div class="col-md-4 col-lg-3">
+                <div class="card h-100 shadow-sm border-0 text-center">
+
+                    <div class="card-body p-4">
+
+                        <h5 class="fw-bold text-primary">
+                            {{ category.name }}
+                        </h5>
+
+                        <p class="text-secondary small">
+                            {{ category.description }}
+                        </p>
+
+                        <a href="#" class="btn btn-outline-primary btn-sm">
+                            Explore
+                        </a>
+
+                    </div>
+
+                </div>
+            </div>
+
+        {% else %}
+
+            <div class="col-12 text-center">
+                <p class="text-muted">
+                    No categories available.
+                </p>
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+{# ABOUT DEVDocs #}
+<section class="bg-light py-5">
+    <div class="container text-center py-4">
+
+        <h2 class="fw-bold text-primary mb-4">
+            About DevDocs
+        </h2>
+
+        <p class="lead text-secondary mx-auto mb-5" style="max-width: 750px;">
+            DevDocs is a collaborative learning platform where developers
+            can discover tutorials, share their knowledge and improve
+            their programming skills.
+        </p>
+
+        <div class="row g-4">
+
+            <div class="col-md-4">
+                <div class="p-4">
+                    <h4 class="text-primary">📚 Learn</h4>
+                    <p class="text-secondary">
+                        Discover new technologies and learn programming
+                        through practical tutorials.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="p-4">
+                    <h4 class="text-primary">🤝 Share</h4>
+                    <p class="text-secondary">
+                        Share your knowledge and help other developers
+                        improve their skills.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="p-4">
+                    <h4 class="text-primary">🚀 Grow</h4>
+                    <p class="text-secondary">
+                        Develop your skills and grow with a community
+                        of passionate developers.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+{# FOOTER #}
+<footer class="bg-primary text-white pt-5 pb-3">
+    <div class="container">
+
+        <div class="row g-4">
+
+            <div class="col-md-4">
+                <h3 class="fw-bold">DevDocs</h3>
+                <p class="text-white-50">
+                    Learn. Share. Grow.
+                    A collaborative platform for developers
+                    to learn and share technical knowledge.
+                </p>
+            </div>
+
+            <div class="col-md-4">
+                <h5 class="fw-bold">Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <a href="{{ path('app_home') }}"
+                           class="text-white-50 text-decoration-none">Home</a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="#latest-tutorials"
+                           class="text-white-50 text-decoration-none">Latest Tutorials</a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="#"
+                           class="text-white-50 text-decoration-none">Categories</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-md-4">
+                <h5 class="fw-bold">Our Community</h5>
+                <p class="text-white-50">
+                    Share your knowledge and become part
+                    of our developer community.
+                </p>
+            </div>
+
+        </div>
+
+        <hr class="border-light">
+
+        <div class="text-center">
+            <p class="mb-0 text-white-50">
+                © {{ "now"|date("Y") }} DevDocs. All rights reserved.
+            </p>
+        </div>
+
+    </div>
+</footer>
+
+{% endblock %}

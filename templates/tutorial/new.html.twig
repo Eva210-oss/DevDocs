@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Create Tutorial - DevDocs{% endblock %}
+
+{% block body %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <div class="card shadow border-0">
+                <div class="card-header bg-primary text-white py-3">
+                    <h2 class="mb-0">Create a New Tutorial</h2>
+                </div>
+
+                <div class="card-body p-4">
+
+                    <p class="text-muted mb-4">
+                        Share your knowledge with the DevDocs community.
+                    </p>
+
+                    {{ form_start(form) }}
+
+                        <div class="mb-3">
+                            {{ form_row(form.title) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_row(form.content) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_row(form.category) }}
+                        </div>
+
+                        <div class="mb-4">
+                            {{ form_row(form.tags) }}
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ path('app_tutorials') }}"
+                               class="btn btn-outline-secondary">
+                                Cancel
+                            </a>
+
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-plus-circle"></i>
+                                Create Tutorial
+                            </button>
+                        </div>
+
+                    {{ form_end(form) }}
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
